@@ -1,0 +1,25 @@
+# version: '3.5' # Có thể bỏ dòng này trong các phiên bản Docker Compose mới
+
+services:
+  manga_db:
+    container_name: manga_db
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      POSTGRES_USER: ${DATABASE_USER:-user}
+      POSTGRES_DB: ${DATABASE_DB:-manga_db}
+    ports:
+      - "${DATABASE_PORT:-5432}:5432"
+    volumes:
+      - manga_db_data:/var/lib/postgresql/data
+    networks:
+      - manga_network
+    restart: on-failure
+
+volumes:
+  x_db_data:
+
+
+networks:
+  manga_network:
+    driver: bridge
