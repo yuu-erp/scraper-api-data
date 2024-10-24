@@ -7,9 +7,7 @@ export type MangaScraperId = string;
 const readScrapers = (
   relativePath: string,
 ): Record<MangaScraperId, MangaScraper> => {
-  console.log('relativePath: ', relativePath);
   const absolutePath = handlePath(relativePath);
-  console.log('absolutePath: ', absolutePath);
   if (!fs.existsSync(absolutePath)) {
     console.warn(`Directory ${absolutePath} does not exist.`);
     return {};

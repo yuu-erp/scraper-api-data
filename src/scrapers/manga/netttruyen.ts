@@ -39,7 +39,7 @@ export default class MangaNettruyenScraper extends MangaScraper {
     const altTitle = this.parseTitle($('.other-name').text().trim());
     const titles = [mainTitle, ...altTitle];
 
-    const chapters: SourceChapter[] = $('div.chapter')
+    const chapters: SourceChapter[] = $('.list-chapter div.chapter')
       .toArray()
       .map((el) => {
         const chapter = $(el).find('a');

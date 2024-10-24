@@ -1,12 +1,13 @@
 import { readFile } from '.';
+import * as path from 'path';
 
 export const readFileAndFallback = <T>(
-  path: string,
+  pathSub: string,
   fallbackFn?: () => Promise<T>,
 ) => {
-  const fileContent: T = JSON.parse(readFile(path));
-
-  console.log(path, !!fileContent);
+  const fileContent: T = JSON.parse(
+    readFile(pathSub, path.resolve(process.cwd(), './')),
+  );
 
   if (!fileContent) return fallbackFn();
 

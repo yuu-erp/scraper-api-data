@@ -5,7 +5,8 @@ import { mergeMangaInfo } from 'src/utils/data';
 import { SourceManga } from '../types/data';
 import { RequireAtLeastOne } from '../types/utils';
 import Scraper from './Scraper';
-import { writeFile } from 'src/utils';
+import { readFile, writeFile } from 'src/utils';
+import * as path from 'path';
 
 export type ImageSource = {
   image: string;
@@ -36,7 +37,11 @@ export default class MangaScraper extends Scraper {
   async scrapeAllMangaPages(): Promise<SourceManga[]> {
     const data = await this.scrapeAllPages(this.scrapeMangaPage.bind(this));
 
-    writeFile(`./data/${this.id}.json`, JSON.stringify(data, null, 2));
+    writeFile(
+      `./data/${this.id}.json`,
+      JSON.stringify(data, null, 2),
+      path.resolve(process.cwd(), './'),
+    );
     return data;
   }
 
@@ -47,9 +52,11 @@ export default class MangaScraper extends Scraper {
    */
   async scrapeAnilist(sources: SourceManga[]) {
     const fullSources = [];
-    // if (!sources) {
-    //   sources = JSON.parse(readFile(`./data/${this.id}.json`));
-    // }
+    if (!sources) {
+      sources = JSON.parse(
+        readFile(`./data/${this.id}.json`, path.resolve(process.cwd(), './')),
+      );
+    }
     if (!sources?.length) {
       throw new Error('No sources');
     }
@@ -67,6 +74,7 @@ export default class MangaScraper extends Scraper {
     writeFile(
       `./data/${this.id}-full.json`,
       JSON.stringify(fullSources, null, 2),
+      path.resolve(process.cwd(), './'),
     );
 
     return fullSources;
