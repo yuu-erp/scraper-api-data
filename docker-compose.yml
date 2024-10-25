@@ -1,4 +1,4 @@
-# version: '3.5' # Có thể bỏ dòng này trong các phiên bản Docker Compose mới
+# version: '3.5'  # Có thể bỏ dòng này trong các phiên bản Docker Compose mới
 
 services:
   manga_db:
@@ -17,8 +17,8 @@ services:
     restart: on-failure
 
 volumes:
-  x_db_data:
-
+  manga_db_data:
+    # Đã sửa lại cho khớp với phần volumes của service manga_db
 
 networks:
   manga_network:
