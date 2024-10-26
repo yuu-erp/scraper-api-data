@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Manga } from '@prisma/client'; // Nhập model Manga từ Prisma Client
+import scrapers, { MangaScraperId } from 'src/scrapers';
 import { PrismaService } from 'src/service/prismaService/prisma.service';
 import { Chapter } from 'src/types/data';
 
@@ -59,5 +60,36 @@ export class MangaService {
     return this.prisma.chapter.delete({
       where: { id: chapter.id },
     });
+  }
+
+  async getImages(payload): Promise<any> {
+    const { source_id, source_media_id, chapter_id } = payload;
+
+    if (!source_id) {
+      throw new NotFoundException(`Chapter with ID ${source_id} not found`);
+    }
+
+    const animeScrapers = scrapers.manga;
+
+    const scraper = animeScrapers[source_id as MangaScraperId];
+
+    if (!scraper) {
+      throw new NotFoundException(`Chapter with ID ${scraper} not found`);
+    }
+
+    const images = await scraper.getImages({
+      source_id: source_id.toString(),
+      source_media_id: source_media_id.toString(),
+      chapter_id: `chuong-${chapter_id.toString()}`,
+    });
+
+    if (!images) {
+      throw new NotFoundException(`Chapter with ID ${images} not found`);
+    }
+
+    return {
+      success: true,
+      images,
+    };
   }
 }

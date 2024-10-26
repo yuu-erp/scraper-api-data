@@ -62,9 +62,12 @@ export default class MangaNettruyenScraper extends MangaScraper {
 
   async getImages(query: GetImagesQuery) {
     const { source_media_id, chapter_id } = query;
+    console.log({ source_media_id, chapter_id });
+    console.log(`/truyen-tranh/${source_media_id}/${chapter_id}`);
+    return [];
 
     const { data } = await this.client.get(
-      `/truyen-tranh/${source_media_id}/chap-0/${chapter_id}`,
+      `/truyen-tranh/${source_media_id}/${chapter_id}`,
     );
 
     return this.composeImages(data);
