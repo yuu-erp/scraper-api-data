@@ -65,27 +65,16 @@ export class MangaService {
   async getImages(payload): Promise<any> {
     const { source_id, source_media_id, chapter_id } = payload;
 
-    if (!source_id) {
-      throw new NotFoundException(`Chapter with ID ${source_id} not found`);
-    }
-
     const animeScrapers = scrapers.manga;
+    console.log('animeScrapers: ', animeScrapers);
 
     const scraper = animeScrapers[source_id as MangaScraperId];
-
-    if (!scraper) {
-      throw new NotFoundException(`Chapter with ID ${scraper} not found`);
-    }
-
+    console.log('scraper: ', scraper);
     const images = await scraper.getImages({
       source_id: source_id.toString(),
       source_media_id: source_media_id.toString(),
       chapter_id: `chuong-${chapter_id.toString()}`,
     });
-
-    if (!images) {
-      throw new NotFoundException(`Chapter with ID ${images} not found`);
-    }
 
     return {
       success: true,

@@ -24,24 +24,32 @@ export class MangaController {
     };
   }
 
-  // Lấy chi tiết một manga theo ID
-  @Get(':id')
-  async getMangaById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<ApiResponse<Manga>> {
-    const manga = await this.mangaService.getMangaById(id);
-    return {
-      message: `Fetched manga with ID ${id} successfully!`,
-      data: manga,
-    };
-  }
+  // // Lấy chi tiết một manga theo ID
+  // @Get(':id')
+  // async getMangaById(
+  //   @Param('id', ParseIntPipe) id: number,
+  // ): Promise<ApiResponse<Manga>> {
+  //   const manga = await this.mangaService.getMangaById(id);
+  //   return {
+  //     message: `Fetched manga with ID ${id} successfully!`,
+  //     data: manga,
+  //   };
+  // }
 
-  @Get('images')
-  async getImages(
-    @Query('source_id', ParseIntPipe) source_id: number,
-    @Query('source_media_id', ParseIntPipe) source_media_id: number,
-    @Query('chapter_id', ParseIntPipe) chapter_id: number,
-  ) {
+  @Get('/image')
+  async getImages(@Query() query: any) {
+    const { source_id, source_media_id, chapter_id } = query;
+    console.log('{ source_id, source_media_id, chapter_id }:;', {
+      source_id,
+      source_media_id,
+      chapter_id,
+    });
+    if (!source_id || !source_media_id || !chapter_id) {
+      throw new NotFoundException(
+        'Missing required parameters: source_id, source_media_id, chapter_id',
+      );
+    }
+
     return this.mangaService.getImages({
       source_id,
       source_media_id,
