@@ -3,7 +3,8 @@ import { ScraperModule } from './modules/scraper/scraper.module';
 import { MangaModule } from './modules/manga/manga.module';
 import { PrismaModule } from './service/prismaService/prisma.module';
 import { ChapterModule } from './modules/chapter/chapter.module';
-import { UpdateModule } from './service/updateService/update.module';
+import { UploadModule } from './service/updateService/upload.module';
+import { AnilistModule } from './service/anilistService/anilist.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { UpdateModule } from './service/updateService/update.module';
     MangaModule,
     PrismaModule,
     ChapterModule,
-    UpdateModule,
+    UploadModule,
+    AnilistModule,
   ],
   controllers: [],
   providers: [],

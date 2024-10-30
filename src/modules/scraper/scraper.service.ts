@@ -17,6 +17,8 @@ export class ScraperService {
     if (!scraper) {
       throw new NotFoundException(`Source ID ${sourceId} not found`);
     }
+
+    // Đọc và scrape dữ liệu
     const sources = await readFileAndFallback(`./data/${sourceId}.json`, () =>
       scraper.scrapeAllMangaPages(),
     );
@@ -24,33 +26,56 @@ export class ScraperService {
       `./data/${sourceId}-full.json`,
       () => scraper.scrapeAnilist(sources),
     );
+
     // Lưu dữ liệu vào cơ sở dữ liệu
     for (const mangaData of mergedSources) {
-      // Lưu manga
-      const manga = await this.prisma.manga.create({
-        data: {
-          sourceId: mangaData.sourceMangaConnection.id,
+      // Upsert Manga
+      const manga = await this.prisma.manga.upsert({
+        where: { id: mangaData.sourceMangaConnection.id },
+        update: {
+          sourceId: mangaData.sourceMangaConnection.sourceId,
           sourceMediaId: mangaData.sourceMangaConnection.sourceMediaId,
-          sourceConnectionId: mangaData.sourceMangaConnection.sourceId,
-          anilistId: mangaData.anilistId ?? null, // Nếu anilistId không có thì set null
+          sourceConnectionId: mangaData.sourceMangaConnection.id,
+          anilistId: mangaData.anilistId ?? null,
+        },
+        create: {
+          id: mangaData.sourceMangaConnection.id,
+          sourceId: mangaData.sourceMangaConnection.sourceId,
+          sourceMediaId: mangaData.sourceMangaConnection.sourceMediaId,
+          sourceConnectionId: mangaData.sourceMangaConnection.id,
+          anilistId: mangaData.anilistId ?? null,
         },
       });
 
-      // Lưu chapters
+      // Upsert Chapters
       for (const chapter of mangaData.chapters) {
-        await this.prisma.chapter.create({
-          data: {
+        await this.prisma.chapter.upsert({
+          where: {
+            mangaId_sourceChapterId: {
+              mangaId: manga.id, // ID của manga hiện tại
+              sourceChapterId: chapter.sourceChapterId, // ID của chapter trong nguồn
+            },
+          },
+          update: {
+            name: chapter.name,
+            sourceConnectionId: chapter.sourceConnectionId,
+            sourceMediaId: chapter.sourceMediaId,
+            sourceId: chapter.sourceId,
+            slug: chapter.slug,
+          },
+          create: {
             name: chapter.name,
             sourceConnectionId: chapter.sourceConnectionId,
             sourceMediaId: chapter.sourceMediaId,
             sourceChapterId: chapter.sourceChapterId,
             sourceId: chapter.sourceId,
             slug: chapter.slug,
-            mangaId: manga.id, // Liên kết đến manga đã tạo
+            mangaId: manga.id,
           },
         });
       }
     }
+
     return mergedSources;
   }
 
@@ -61,6 +86,6 @@ export class ScraperService {
       id: value.id,
     }));
 
-    return dataChoices
+    return dataChoices;
   }
 }

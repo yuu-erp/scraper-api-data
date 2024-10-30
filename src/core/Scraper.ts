@@ -160,7 +160,7 @@ export default class Scraper {
           logger.error('error', err),
         );
 
-        if (!result || page === 2) {
+        if (!result) {
           isEnd = true;
 
           break;

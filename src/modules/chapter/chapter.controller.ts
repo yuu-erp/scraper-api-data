@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import { ChapterService } from './chapter.service';
 import { ChapterResponseDto } from './dto/chapter-response.dto';
 
@@ -21,7 +14,7 @@ export class ChapterController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id') id: string) {
     return this.chapterService.findOne(id);
   }
 }

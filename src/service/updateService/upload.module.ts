@@ -1,12 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigurationModule } from '../../config/configuration.module';
-import { UpdateService } from './update.service';
+import { UploadService } from './upload.service';
 
 @Global()
 @Module({
   imports: [ConfigurationModule],
   controllers: [],
-  providers: [UpdateService],
-  exports: [UpdateService],
+  providers: [UploadService],
+  exports: [UploadService],
 })
-export class UpdateModule {}
+export class UploadModule {}

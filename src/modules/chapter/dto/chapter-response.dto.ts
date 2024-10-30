@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ChapterResponseDto {
   @ApiProperty({ example: 1, description: 'Unique identifier for the chapter' })
-  id: number;
+  id: string;
 
   @ApiProperty({
     example: 'nguyen-ton-netttruyen',

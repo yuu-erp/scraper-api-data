@@ -9,4 +9,4 @@ import { AnilistService } from './anilist.service';
   providers: [AnilistService],
   exports: [AnilistService],
 })
-export class UpdateModule {}
+export class AnilistModule {}

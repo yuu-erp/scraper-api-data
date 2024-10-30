@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from 'axios';
 import { MediaType } from 'src/types/anilist';
 import { getRetriesId } from 'src/utils/anilist';
 import { mergeMangaInfo } from 'src/utils/data';
-import { SourceManga } from '../types/data';
+import { Manga, SourceManga } from '../types/data';
 import { RequireAtLeastOne } from '../types/utils';
 import Scraper from './Scraper';
 import { readFile, writeFile } from 'src/utils';
@@ -50,7 +50,7 @@ export default class MangaScraper extends Scraper {
    * @param sources sources of manga
    * @returns merged sources of manga
    */
-  async scrapeAnilist(sources: SourceManga[]) {
+  async scrapeAnilist(sources: SourceManga[]): Promise<Manga[]> {
     const fullSources = [];
     if (!sources) {
       sources = JSON.parse(
