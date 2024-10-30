@@ -10,7 +10,7 @@ import { PrismaService } from 'src/service/prismaService/prisma.service';
 export class ScraperService {
   constructor(private readonly prisma: PrismaService) {} // Inject PrismaService
 
-  async execute(payload: ScraperDto): Promise<ApiResponse<Manga[]>> {
+  async execute(payload: ScraperDto): Promise<Manga[]> {
     const { sourceId } = payload;
     const animeScrapers = scrapers.manga;
     const scraper = animeScrapers[sourceId as MangaScraperId];
@@ -51,22 +51,16 @@ export class ScraperService {
         });
       }
     }
-    return {
-      message: 'Scraper init successfully!',
-      data: [...mergedSources],
-    };
+    return mergedSources;
   }
 
-  listSourceId(): ApiResponse<{ name: string; id: string }[]> {
+  listSourceId(): { name: string; id: string }[] {
     const allScrapers = scrapers.manga;
     const dataChoices = Object.values(allScrapers).map((value) => ({
       name: value.name,
       id: value.id,
     }));
 
-    return {
-      message: 'Get list sourceId successfully!',
-      data: dataChoices,
-    };
+    return dataChoices
   }
 }

@@ -20,7 +20,7 @@ export class ScraperController {
   @UseGuards(XApiKeyGuard)
   @Post()
   @HttpCode(HttpStatus.OK)
-  async scrape(@Body() payload: ScraperDto): Promise<ApiResponse<Manga[]>> {
+  async scrape(@Body() payload: ScraperDto): Promise<Manga[]> {
     const result = await this.scraperService.execute(payload);
     return result;
   }
@@ -28,7 +28,7 @@ export class ScraperController {
   @UseGuards(XApiKeyGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
-  getListSourceId(): ApiResponse<{ name: string; id: string }[]> {
+  getListSourceId(): { name: string; id: string }[] {
     const ids = this.scraperService.listSourceId();
     return ids;
   }

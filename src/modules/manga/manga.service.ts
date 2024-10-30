@@ -64,21 +64,14 @@ export class MangaService {
 
   async getImages(payload): Promise<any> {
     const { source_id, source_media_id, chapter_id } = payload;
-
     const animeScrapers = scrapers.manga;
-    console.log('animeScrapers: ', animeScrapers);
-
     const scraper = animeScrapers[source_id as MangaScraperId];
-    console.log('scraper: ', scraper);
     const images = await scraper.getImages({
       source_id: source_id.toString(),
       source_media_id: source_media_id.toString(),
       chapter_id: `chuong-${chapter_id.toString()}`,
     });
 
-    return {
-      success: true,
-      images,
-    };
+    return images;
   }
 }

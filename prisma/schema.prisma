@@ -14,12 +14,12 @@ datasource db {
 }
 
 model Manga {
-  id                 Int       @id @default(autoincrement())
-  sourceId           String    @unique
+  id                 String    @id
   sourceMediaId      String?
   sourceConnectionId String?
+  sourceId           String
   anilistId          Int?
-  chapters           Chapter[]
+  chapters           Chapter[] @relation("MangaChapters")
 }
 
 model Chapter {
@@ -28,8 +28,9 @@ model Chapter {
   sourceConnectionId String
   sourceMediaId      String?
   sourceChapterId    String?
-  sourceId           String?
+  sourceId           String
   slug               String
-  mangaId            Int
-  manga              Manga   @relation(fields: [mangaId], references: [id])
+  manga              Manga   @relation("MangaChapters", fields: [sourceConnectionId], references: [id])
+
+  @@index([sourceConnectionId])
 }

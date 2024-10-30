@@ -39,11 +39,6 @@ export class MangaController {
   @Get('/image')
   async getImages(@Query() query: any) {
     const { source_id, source_media_id, chapter_id } = query;
-    console.log('{ source_id, source_media_id, chapter_id }:;', {
-      source_id,
-      source_media_id,
-      chapter_id,
-    });
     if (!source_id || !source_media_id || !chapter_id) {
       throw new NotFoundException(
         'Missing required parameters: source_id, source_media_id, chapter_id',
