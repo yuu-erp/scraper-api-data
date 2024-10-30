@@ -12,4 +12,14 @@ export class ConfigurationService implements ConfigType {
   get apiKey(): string {
     return this.configService.get('apiKey');
   }
+
+  get cloudinaryName(): string {
+    return this.configService.get('cloudinaryName');
+  }
+  get cloudinaryApiKey(): string {
+    return this.configService.get('cloudinaryApiKey');
+  }
+  get cloudinaryApiSecret(): string {
+    return this.configService.get('cloudinaryApiSecret');
+  }
 }

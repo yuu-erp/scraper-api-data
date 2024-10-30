@@ -79,10 +79,9 @@ export default class MangaNettruyenScraper extends MangaScraper {
 
     return images.toArray().map((el) => {
       const imageEl = $(el).find('img');
-      const source = imageEl.data('src') as string;
+      const source = imageEl.attr('data-src') as string;
 
       const protocols = ['http', 'https'];
-
       const image = protocols.some((protocol) => source.includes(protocol))
         ? source
         : `https:${source}`;
