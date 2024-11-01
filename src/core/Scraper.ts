@@ -27,7 +27,6 @@ export default class Scraper {
   disableMonitor: boolean;
   proxy: Proxy;
   locales: string[];
-
   constructor(
     id: string,
     name: string,
@@ -38,7 +37,7 @@ export default class Scraper {
         referer: axiosConfig.baseURL,
         origin: axiosConfig.baseURL,
       },
-      timeout: 20000,
+      timeout: 60000,
       ...axiosConfig,
     };
 
@@ -155,31 +154,31 @@ export default class Scraper {
     let page = 1;
 
     while (!isEnd) {
-      try {
-        const result = await scrapeFn(page).catch((err) =>
-          logger.error('error', err),
-        );
+      // try {
+      const result = await scrapeFn(page).catch((err) =>
+        logger.error('error', err),
+      );
 
-        if (!result) {
-          isEnd = true;
-
-          break;
-        }
-
-        console.log(`Scraped page ${page} - ${this.id}`);
-
-        if (result.length === 0) {
-          isEnd = true;
-
-          break;
-        }
-
-        page++;
-
-        list.push(result);
-      } catch (err) {
+      if (!result) {
         isEnd = true;
+
+        break;
       }
+
+      console.log(`Scraped page ${page} - ${this.id}`);
+
+      if (result.length === 0) {
+        isEnd = true;
+
+        break;
+      }
+
+      page++;
+
+      list.push(result);
+      // } catch (err) {
+      // isEnd = true;
+      // }
     }
 
     return this.removeBlacklistSources(list.flat());

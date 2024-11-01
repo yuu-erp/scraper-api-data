@@ -11,13 +11,7 @@ export class ChapterService {
   ) {}
 
   async findAll(): Promise<ChapterResponseDto[]> {
-    return this.prismaService.manga.findMany({
-      where: {
-        anilistId: {
-          not: null, // Chỉ lấy những bản ghi có anilistId không null
-        },
-      },
-    });
+    return this.prismaService.manga.findMany();
   }
 
   async findOne(id: string) {
