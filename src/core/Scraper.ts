@@ -12,7 +12,6 @@ interface Server {
 }
 
 export const DEFAULT_CONFIG: AxiosRequestConfig = {};
-
 export const DEFAULT_MONITOR_INTERVAL = 1_200_000; // 20 minutes
 export default class Scraper {
   client: AxiosInstance;

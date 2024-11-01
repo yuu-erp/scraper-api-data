@@ -51,7 +51,7 @@ export default class MangaScraper extends Scraper {
    * @returns merged sources of manga
    */
   async scrapeAnilist(sources: SourceManga[]): Promise<Manga[]> {
-    const fullSources = [];
+    const fullSources: Manga[] = [];
     if (!sources) {
       sources = JSON.parse(
         readFile(`./data/${this.id}.json`, path.resolve(process.cwd(), './')),
